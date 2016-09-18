@@ -1,0 +1,63 @@
+﻿<Page
+    x:Class="MaintenanceAlert.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MaintenanceAlert"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:cnvt="using:MaintenanceAlert.Converters"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <cnvt:PercentToColorConverter x:Key="PctToColorConverter"/>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid Background="Black">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" 
+                   Text="Oil Level" 
+                   HorizontalAlignment="Center"
+                   Foreground="White"
+                   FontSize="36" 
+                   FontWeight="Bold"/>
+
+        <Button Grid.Row="1" 
+                x:Name="btnSendMetaData"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"
+                Content="Start"
+                Foreground="Black"
+                Background="Beige"
+                Command="{Binding Start}"
+                />
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Foreground="Wheat" FontSize="12" HorizontalAlignment="Right" Margin="0,10,5,10" Text="Azure Message"/>
+            <TextBlock Grid.Column="1" Foreground="Wheat" FontSize="12" HorizontalAlignment="Left" Margin="5,10,0,10" Text="{Binding Path=AzureMessage, Mode=OneWay}"/>
+        </Grid>
+
+        <Rectangle Grid.Row="3" Grid.Column="1" x:Name="batteryRect" Width="100" Stroke="White" StrokeThickness="3" >
+            <Rectangle.Fill>
+                <SolidColorBrush Color="{Binding Path=OilPercent, Converter={StaticResource PctToColorConverter}, Mode=OneWay}"  Opacity="0.8"/>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Row="3" Grid.Column="1" x:Name="fillRect" Width="100" Height="500" Margin="0,5,0,0" Stroke="Beige" StrokeThickness="3" >
+            <Rectangle.Fill>
+                <SolidColorBrush Color="Black"/>
+            </Rectangle.Fill>
+            <Rectangle.RenderTransform>
+                <ScaleTransform x:Name="level" ScaleY="{Binding Path=OilPercent,Mode=OneWay}"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+    </Grid>
+</Page>
